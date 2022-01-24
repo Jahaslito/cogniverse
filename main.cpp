@@ -1,6 +1,11 @@
 #include <iostream>
+#include "classes/Window/Window.h"
+#include "classes/Shader/Shader.h"
+
+int Window::width;
+int Window::height;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    Window window("test", 800, 600, false);
+    window.render();
 }

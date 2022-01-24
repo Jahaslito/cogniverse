@@ -3,7 +3,7 @@ project(cogniverse)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cogniverse main.cpp)
+add_executable(cogniverse main.cpp glad.c classes/Shader/Shader.h classes/Shader/Shader.cpp classes/Window/Window.cpp classes/Window/Window.h)
 
 find_package(OpenGL REQUIRED)
 #include glfw3
