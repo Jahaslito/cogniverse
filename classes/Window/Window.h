@@ -11,6 +11,11 @@
 
 using namespace std;
 
+/* Window class
+ *
+ * This class handles the usual OpenGL boilerplate for setting things up.
+ *
+ * */
 
 class Window {
 protected:
