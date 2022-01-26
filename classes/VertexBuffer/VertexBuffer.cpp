@@ -4,8 +4,6 @@
 
 #include "VertexBuffer.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
 
 VertexBuffer::VertexBuffer(float vertices[], GLenum type, int size){
     glGenBuffers(1, &(VertexBuffer::rendererId));
