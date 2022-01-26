@@ -3,7 +3,7 @@ project(cogniverse)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cogniverse main.cpp glad.c classes/Shader/Shader.h classes/Shader/Shader.cpp renderables/Triangle.h classes/VertexBuffer/VertexBuffer.cpp classes/VertexBuffer/VertexBuffer.h classes/VertexArray/VertexArray.cpp classes/VertexArray/VertexArray.h classes/Renderer.cpp classes/Renderer.h classes/ElementBuffer/ElementBuffer.cpp classes/ElementBuffer/ElementBuffer.h)
+add_executable(cogniverse main.cpp glad.c classes/Shader/Shader.h classes/Shader/Shader.cpp renderables/Hexagon.h classes/VertexBuffer/VertexBuffer.cpp classes/VertexBuffer/VertexBuffer.h classes/VertexArray/VertexArray.cpp classes/VertexArray/VertexArray.h classes/Renderer/Renderer.cpp classes/Renderer/Renderer.h classes/ElementBuffer/ElementBuffer.cpp classes/ElementBuffer/ElementBuffer.h renderables/Rectangle.h classes/Texture/Texture.cpp classes/Texture/Texture.h util/stb_util.cpp)
 
 find_package(OpenGL REQUIRED)
 #include glfw3

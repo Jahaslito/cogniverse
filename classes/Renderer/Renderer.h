@@ -7,10 +7,10 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "VertexBuffer/VertexBuffer.h"
-#include "VertexArray/VertexArray.h"
-#include "Shader/Shader.h"
-#include "ElementBuffer/ElementBuffer.h"
+#include "../VertexBuffer/VertexBuffer.h"
+#include "../VertexArray/VertexArray.h"
+#include "../Shader/Shader.h"
+#include "../ElementBuffer/ElementBuffer.h"
 
 class Renderer {
 public:

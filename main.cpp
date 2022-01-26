@@ -1,8 +1,9 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "renderables/Triangle.h"
-#include "classes/Renderer.h"
+#include "renderables/Hexagon.h"
+#include "classes/Renderer/Renderer.h"
+#include "renderables/Rectangle.h"
 
 int width = 800;
 int height = 600;
@@ -68,6 +69,7 @@ void initialize(){
     initOpenGL();
     registerResizer();
 }
+
 int main() {
 
     initialize();
@@ -75,8 +77,10 @@ int main() {
     Renderer renderer;
 
     //instantiate objects to be drawn.
-    Triangle triangle;
+    Hexagon hexagon;
+    Rectangle rectangle;
 
+    //render loop
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -85,7 +89,8 @@ int main() {
 
         //rendering renderables here
         // -> pass the vertex array, element buffer and shader to the renderer
-        renderer.render(triangle.va, triangle.eb, triangle.shader);
+        renderer.render(hexagon.va, hexagon.eb, hexagon.shader);
+        renderer.render(rectangle.va, rectangle.eb, rectangle.shader);
 
 
         glfwSwapBuffers(window);
