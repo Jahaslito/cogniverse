@@ -14,8 +14,7 @@
 
 class Renderer {
 public:
-    unsigned int id;
-    Renderer(unsigned int id);
+    Renderer();
     void render(VertexArray& vertexArray, ElementBuffer& elementBuffer, Shader& shader);
     void clear();
 };

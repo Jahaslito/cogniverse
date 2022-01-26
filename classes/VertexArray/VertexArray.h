@@ -10,7 +10,7 @@
 
 class VertexArray {
 public:
-    VertexArray(unsigned int rendererId);
+    VertexArray();
     void bind();
     void unBind();
 

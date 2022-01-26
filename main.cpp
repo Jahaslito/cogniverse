@@ -1,12 +1,8 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "classes/Shader/Shader.h"
 #include "renderables/Triangle.h"
-#include "classes/VertexBuffer/VertexBuffer.h"
-#include "classes/VertexArray/VertexArray.h"
 #include "classes/Renderer.h"
-#include "classes/ElementBuffer/ElementBuffer.h"
 
 int width = 800;
 int height = 600;
@@ -76,24 +72,10 @@ int main() {
 
     initialize();
 
-    Renderer renderer(1);
+    Renderer renderer;
+
+    //instantiate objects to be drawn.
     Triangle triangle;
-
-    VertexArray triangleVertexArray(renderer.id);
-    triangleVertexArray.bind();
-
-    VertexBuffer triangleVertexBuffer(renderer.id);
-    triangleVertexBuffer.bind(triangle.vertices, GL_STATIC_DRAW, sizeof(triangle.vertices));
-
-    ElementBuffer elementBuffer(renderer.id, 12);
-    elementBuffer.bind(triangle.indices, GL_STATIC_DRAW, sizeof(triangle.indices));
-
-    triangleVertexBuffer.setAttribPointers(0, 3, GL_FLOAT,
-                                   GL_FALSE, 3 * sizeof(float), (void*)0);
-
-    triangleVertexArray.unBind();
-
-    Shader triangleShader("shaders/Triangle.vs", "shaders/Triangle.fs");
 
     while(!glfwWindowShouldClose(window))
     {
@@ -102,7 +84,8 @@ int main() {
         renderer.clear();
 
         //rendering renderables here
-        renderer.render(triangleVertexArray, elementBuffer, triangleShader);
+        // -> pass the vertex array, element buffer and shader to the renderer
+        renderer.render(triangle.va, triangle.eb, triangle.shader);
 
 
         glfwSwapBuffers(window);

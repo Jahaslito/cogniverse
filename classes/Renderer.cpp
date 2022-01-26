@@ -4,8 +4,7 @@
 
 #include "Renderer.h"
 
-Renderer::Renderer(unsigned int _id) {
-    id = _id;
+Renderer::Renderer() {
     clear();
 }
 
@@ -17,5 +16,6 @@ void Renderer::clear() {
 void Renderer::render(VertexArray& vertexArray, ElementBuffer& elementBuffer, Shader& shader) {
     shader.use();
     vertexArray.bind();
+    elementBuffer.bind();
     glDrawElements(GL_TRIANGLES, elementBuffer.getCount(), GL_UNSIGNED_INT, 0);
 }

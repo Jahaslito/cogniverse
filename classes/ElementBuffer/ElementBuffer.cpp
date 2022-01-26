@@ -4,14 +4,20 @@
 
 #include "ElementBuffer.h"
 
-ElementBuffer::ElementBuffer(unsigned int rendererId, unsigned int _count) {
+ElementBuffer::ElementBuffer(unsigned int _count, unsigned int indices[], GLenum type) {
     ElementBuffer::count = _count;
-    glGenBuffers(rendererId, &(ElementBuffer::rendererId));
+    glGenBuffers(1, &(ElementBuffer::rendererId));
+    bind();
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), indices, type);
 }
 
-void ElementBuffer::bind(unsigned int indices[], GLenum type, int size) {
+void ElementBuffer::bind() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, type);
+
+}
+
+void ElementBuffer::unBind() {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 int ElementBuffer::getCount() {

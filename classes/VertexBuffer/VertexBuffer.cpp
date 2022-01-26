@@ -7,13 +7,18 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-VertexBuffer::VertexBuffer(unsigned int rendererId){
-    glGenBuffers(rendererId, &(VertexBuffer::rendererId));
+VertexBuffer::VertexBuffer(float vertices[], GLenum type, int size){
+    glGenBuffers(1, &(VertexBuffer::rendererId));
+    bind();
+    glBufferData(GL_ARRAY_BUFFER, size, vertices, type);
 }
 
-void VertexBuffer::bind(float vertices[], GLenum type, int size) {
+void VertexBuffer::bind() {
     glBindBuffer(GL_ARRAY_BUFFER, rendererId);
-    glBufferData(GL_ARRAY_BUFFER, size, vertices, type);
+}
+
+void VertexBuffer::unBind() {
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void VertexBuffer::setAttribPointers(GLuint index, GLint size, GLenum type,

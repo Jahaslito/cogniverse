@@ -13,8 +13,9 @@ class VertexBuffer {
 private:
     unsigned int rendererId;
 public:
-    VertexBuffer(unsigned int rendererId);
-    void bind(float vertices[], GLenum type, int size);
+    VertexBuffer(float vertices[], GLenum type, int size);
+    void bind();
+    void unBind();
     void setAttribPointers(GLuint index, GLint size, GLenum type,
                            GLboolean normalized, GLsizei stride, const GLvoid * pointer);
 };

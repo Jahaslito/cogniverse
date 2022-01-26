@@ -10,8 +10,9 @@
 
 class ElementBuffer {
 public:
-    ElementBuffer(unsigned int rendererId, unsigned int _count);
-    void bind(unsigned int indices[], GLenum type, int size);
+    ElementBuffer(unsigned int _count, unsigned int indices[], GLenum type);
+    void bind();
+    void unBind();
     int getCount();
 private:
     unsigned int rendererId;
