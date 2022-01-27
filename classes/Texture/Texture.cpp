@@ -5,7 +5,7 @@
 #include "Texture.h"
 #include "../../util/stb_image.h"
 
-Texture::Texture(const char* texturePath, GLint internalFormat, GLenum format, int _textureUnit) {
+SingleTexture::SingleTexture(const char* texturePath, GLint internalFormat, GLenum format, int _textureUnit) {
     glGenTextures(1, &id);
     textureUnit = _textureUnit;
     bind();
@@ -13,24 +13,24 @@ Texture::Texture(const char* texturePath, GLint internalFormat, GLenum format, i
     load(texturePath, internalFormat, format);
 }
 
-void Texture::bind() {
+void SingleTexture::bind() {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, id);
 }
 
-void Texture::unBind() {
+void SingleTexture::unBind() {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::setOptions() {
+void SingleTexture::setOptions() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Texture::load(const char* texturePath, GLint internalFormat, GLenum format) {
+void SingleTexture::load(const char* texturePath, GLint internalFormat, GLenum format) {
     stbi_set_flip_vertically_on_load(true);
     data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
     if(data){

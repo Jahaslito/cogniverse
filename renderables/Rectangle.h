@@ -41,8 +41,8 @@ public:
     VertexArray va;
     VertexBuffer vb = VertexBuffer(vertices, GL_STATIC_DRAW, sizeof(vertices));
     ElementBuffer eb = ElementBuffer(6, indices, GL_STATIC_DRAW);
-    Texture texture1 = Texture("assets/container.jpg", GL_RGB, GL_RGB, 0);
-    Texture texture2 = Texture("assets/awesomeface.png", GL_RGB, GL_RGBA, 1);
+    SingleTexture texture1 = SingleTexture("assets/container.jpg", GL_RGB, GL_RGB, 0);
+    SingleTexture texture2 = SingleTexture("assets/awesomeface.png", GL_RGB, GL_RGBA, 1);
     Shader shader = Shader("shaders/Rectangle.vs", "shaders/Rectangle.fs");
 };
 

@@ -16,17 +16,17 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 void Camera::processKeyboard(GLFWwindow *window, float deltaTime) {
-    cameraSpeed *= deltaTime;
+    float speed = cameraSpeed * deltaTime;
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        cameraPos += speed * cameraFront;
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        cameraPos -= speed * cameraFront;
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp))
-                     * cameraSpeed;
+                     * speed;
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp))
-                     * cameraSpeed;
+                     * speed;
 }
 
 void Camera::processMouseMove(double xPos, double yPos) {

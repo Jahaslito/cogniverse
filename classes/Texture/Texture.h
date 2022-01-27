@@ -10,9 +10,9 @@
 #include "../../util/stb_image.h"
 #include <iostream>
 
-class Texture {
+class SingleTexture {
 public:
-    Texture(const char* texturePath, GLint internalFormat, GLenum format, int _textureUnit);
+    SingleTexture(const char* texturePath, GLint internalFormat, GLenum format, int _textureUnit);
     void bind();
     void unBind();
     void setOptions();
