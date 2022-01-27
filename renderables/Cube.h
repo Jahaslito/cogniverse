@@ -24,6 +24,10 @@ public:
     void transform3D() const;
     void rotTransform() const;
     void setViewProjection() const;
+    void setProjection() const;
+    void setCameraRotate() const;
+    void walkAround() const;
+
     float vertices[180] = {
             //vertices                     // texture coords
             -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -153,5 +157,24 @@ void Cube::setViewProjection() const {
     shader.setMat4("projection", 1, GL_FALSE, glm::value_ptr(projection));
 }
 
+void Cube::setProjection() const {
+    glm::mat4 projection;
+    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    shader.setMat4("projection", 1, GL_FALSE, glm::value_ptr(projection));
+}
+
+void Cube::setCameraRotate() const {
+    const float radius = 5.0f;
+    float camX = sin(glfwGetTime()) * radius;
+    float camZ = cos(glfwGetTime()) * radius;
+    glm::mat4 view;
+    view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0),
+                       glm::vec3(0.0, 1.0, 0.0));
+    shader.setMat4("view", 1, GL_FALSE, glm::value_ptr(view));
+}
+
+void Cube::walkAround() const {
+
+}
 
 #endif //COGNIVERSE_CUBE_H

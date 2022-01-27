@@ -11,15 +11,19 @@
 #include "../VertexArray/VertexArray.h"
 #include "../Shader/Shader.h"
 #include "../ElementBuffer/ElementBuffer.h"
+#include "../Camera/Camera.h"
 
 class Renderer {
 public:
-    Renderer();
+    Camera* camera;
+    Renderer(Camera& _camera);
+    ~Renderer();
     void render(VertexArray& vertexArray, ElementBuffer& elementBuffer, Shader& shader);
     //vCount -> vertices count
     void renderWithoutEb(VertexArray& vertexArray, int vCount, Shader& shader);
     void clear();
     void enableDepthTest();
+    void setMatrices(Shader shader);
 };
 
 

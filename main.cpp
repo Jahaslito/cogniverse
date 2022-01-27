@@ -5,10 +5,16 @@
 #include "classes/Renderer/Renderer.h"
 #include "renderables/Rectangle.h"
 #include "renderables/Cube.h"
+#include "classes/Camera/Camera.h"
 
 int width = 800;
 int height = 600;
 GLFWwindow* window = NULL;
+
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+float yScrollOffset, xMousePos, yMousePos;
 
 void initGlfw() {
     glfwInit();
@@ -59,8 +65,25 @@ void registerResizer() {
 
 void processInput(GLFWwindow *window) {
     // check whether ESC key was pressed
+    const float  cameraSpeed = 2.5f * deltaTime;
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+}
+
+void mouse_callback(GLFWwindow* window, double xPos, double yPos){
+   xMousePos = xPos;
+   yMousePos = yPos;
+}
+
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+    yScrollOffset = yOffset;
+}
+
+void setupMouse(){
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
 }
 
 // initializes the window and openGL.
@@ -69,6 +92,7 @@ void initialize(){
     create("Cogniverse");
     initOpenGL();
     registerResizer();
+    setupMouse();
 }
 
 glm::vec3 cubePositions[] = {
@@ -88,11 +112,11 @@ int main() {
 
     initialize();
 
-    Renderer renderer;
+    Camera cam = Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f)
+                        , 0.05f, 2.5f);
+    Renderer renderer(cam);
 
     //instantiate objects to be drawn.
-    Hexagon hexagon;
-    Rectangle rectangle;
     Cube cube;
 
     //render loop
@@ -102,32 +126,25 @@ int main() {
 
         renderer.clear();
 
-        //rendering renderables here
-        // -> pass the vertex array, element buffer and shader to the renderer
-        //renderer.render(hexagon.va, hexagon.eb, hexagon.shader);
-        //rectangle.shader.use();
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        cam.processKeyboard(window, deltaTime);
+        cam.processMouseMove(xMousePos, yMousePos);
+        cam.processMouseScroll(yScrollOffset);
+
         cube.shader.use();
         cube.setUniforms();
+
         for(unsigned int i = 0; i < 10; i++){
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             float angle = 20.0f * i;
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0, 0.3f, 0.5f));
             cube.shader.setMat4("model", 1, GL_FALSE, glm::value_ptr(model));
-            cube.setViewProjection();
             renderer.renderWithoutEb(cube.va, 36, cube.shader);
-
         }
-        //rectangle.setUniforms();
-
-        //rectangle.transform();
-        //rectangle.transform2();
-        //rectangle.transform3D();
-        //cube.rotTransform();
-        //renderer.render(rectangle.va, rectangle.eb, rectangle.shader);
-        renderer.renderWithoutEb(cube.va, 36, cube.shader);
-
-
 
         glfwSwapBuffers(window);
         glfwPollEvents();
