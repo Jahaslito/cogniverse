@@ -12,9 +12,10 @@
 #include "../classes/Texture/Texture.h"
 #include "../classes/Shader/Shader.h"
 
-class Rectangle {
+class Rectangle{
 public:
     Rectangle();
+    void setUniforms() const;
     float vertices[32] = {
             //vertices                     //colors                      // texture coords
             0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0, 1.0,
@@ -32,7 +33,8 @@ public:
     VertexArray va;
     VertexBuffer vb = VertexBuffer(vertices, GL_STATIC_DRAW, sizeof(vertices));
     ElementBuffer eb = ElementBuffer(6, indices, GL_STATIC_DRAW);
-    Texture texture = Texture("assets/container.jpg");
+    Texture texture1 = Texture("assets/container.jpg", GL_RGB, GL_RGB, 0);
+    Texture texture2 = Texture("assets/awesomeface.png", GL_RGB, GL_RGBA, 1);
     Shader shader = Shader("shaders/Rectangle.vs", "shaders/Rectangle.fs");
 };
 
@@ -48,6 +50,11 @@ Rectangle::Rectangle() {
     va.unBind();
     vb.unBind();
     eb.unBind();
+}
+
+void Rectangle::setUniforms() const {
+    shader.setInt("texture1", 0);
+    shader.setInt("texture2", 1);
 }
 
 #endif //COGNIVERSE_RECTANGLE_H

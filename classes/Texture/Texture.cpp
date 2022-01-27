@@ -5,18 +5,21 @@
 #include "Texture.h"
 #include "../../util/stb_image.h"
 
-Texture::Texture(const char* texturePath) {
+Texture::Texture(const char* texturePath, GLint internalFormat, GLenum format, int _textureUnit) {
     glGenTextures(1, &id);
+    textureUnit = _textureUnit;
     bind();
     setOptions();
-    load(texturePath);
+    load(texturePath, internalFormat, format);
 }
 
 void Texture::bind() {
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, id);
 }
 
 void Texture::unBind() {
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -27,10 +30,11 @@ void Texture::setOptions() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Texture::load(const char* texturePath) {
+void Texture::load(const char* texturePath, GLint internalFormat, GLenum format) {
+    stbi_set_flip_vertically_on_load(true);
     data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
     if(data){
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else{

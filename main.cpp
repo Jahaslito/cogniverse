@@ -90,6 +90,8 @@ int main() {
         //rendering renderables here
         // -> pass the vertex array, element buffer and shader to the renderer
         //renderer.render(hexagon.va, hexagon.eb, hexagon.shader);
+        rectangle.shader.use();
+        rectangle.setUniforms();
         renderer.render(rectangle.va, rectangle.eb, rectangle.shader);
 
 

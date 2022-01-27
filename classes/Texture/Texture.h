@@ -12,16 +12,17 @@
 
 class Texture {
 public:
-    Texture(const char* texturePath);
+    Texture(const char* texturePath, GLint internalFormat, GLenum format, int _textureUnit);
     void bind();
     void unBind();
     void setOptions();
-    void load(const char* texturePath);
+    void load(const char* texturePath, GLint internalFormat, GLenum format);
 
 private:
     unsigned int id;
     int width, height, nrChannels;
     unsigned char* data;
+    int textureUnit;
 };
 
 
