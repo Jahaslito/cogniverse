@@ -4,6 +4,7 @@
 #include "renderables/Hexagon.h"
 #include "classes/Renderer/Renderer.h"
 #include "renderables/Rectangle.h"
+#include "renderables/Cube.h"
 
 int width = 800;
 int height = 600;
@@ -70,6 +71,19 @@ void initialize(){
     registerResizer();
 }
 
+glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f, 0.0f,0.0f),
+        glm::vec3( 2.0f, 5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f, 3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f, 2.0f, -2.5f),
+        glm::vec3( 1.5f, 0.2f, -1.5f),
+        glm::vec3(-1.3f, 1.0f, -1.5f)
+};
+
 int main() {
 
     initialize();
@@ -79,6 +93,7 @@ int main() {
     //instantiate objects to be drawn.
     Hexagon hexagon;
     Rectangle rectangle;
+    Cube cube;
 
     //render loop
     while(!glfwWindowShouldClose(window))
@@ -90,9 +105,28 @@ int main() {
         //rendering renderables here
         // -> pass the vertex array, element buffer and shader to the renderer
         //renderer.render(hexagon.va, hexagon.eb, hexagon.shader);
-        rectangle.shader.use();
-        rectangle.setUniforms();
-        renderer.render(rectangle.va, rectangle.eb, rectangle.shader);
+        //rectangle.shader.use();
+        cube.shader.use();
+        cube.setUniforms();
+        for(unsigned int i = 0; i < 10; i++){
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            float angle = 20.0f * i;
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0, 0.3f, 0.5f));
+            cube.shader.setMat4("model", 1, GL_FALSE, glm::value_ptr(model));
+            cube.setViewProjection();
+            renderer.renderWithoutEb(cube.va, 36, cube.shader);
+
+        }
+        //rectangle.setUniforms();
+
+        //rectangle.transform();
+        //rectangle.transform2();
+        //rectangle.transform3D();
+        //cube.rotTransform();
+        //renderer.render(rectangle.va, rectangle.eb, rectangle.shader);
+        renderer.renderWithoutEb(cube.va, 36, cube.shader);
+
 
 
         glfwSwapBuffers(window);

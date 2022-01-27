@@ -25,6 +25,7 @@ public:
     void setBool(const string &name, bool val) const;
     void setInt(const string &name, int val) const;
     void setFloat(const string &name, float val) const;
+    void setMat4(const string &name, int count, GLboolean transpose, const GLfloat *value) const;
 };
 
 

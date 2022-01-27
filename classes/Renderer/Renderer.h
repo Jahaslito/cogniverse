@@ -16,7 +16,10 @@ class Renderer {
 public:
     Renderer();
     void render(VertexArray& vertexArray, ElementBuffer& elementBuffer, Shader& shader);
+    //vCount -> vertices count
+    void renderWithoutEb(VertexArray& vertexArray, int vCount, Shader& shader);
     void clear();
+    void enableDepthTest();
 };
 
 
