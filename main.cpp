@@ -9,6 +9,7 @@
 #include "classes/Shader/Shader.h"
 #include "classes/Camera/Cam.h"
 #include "classes/ModelLoad/Model.h"
+#include "renderables/Splash.h"
 
 #include <iostream>
 
@@ -35,6 +36,8 @@ float carSpeed = 0.15f;
 float carX = 0.0f;
 float carZ = 0.0f;
 float carRotation = 0.0f;
+
+float countTime = 120.0f * 100;
 
 int main()
 {
@@ -80,6 +83,8 @@ int main()
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+    Splash splash;
+
 
     // build and compile shaders
     // -------------------------
@@ -96,6 +101,7 @@ int main()
 
     // render loop
     // -----------
+
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -113,6 +119,16 @@ int main()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        if(countTime > 0 ){
+            splash.shader.use();
+            splash.va.bind();
+            splash.texture1.bind();
+            splash.eb.bind();
+            glDrawElements(GL_TRIANGLES, splash.eb.getCount(), GL_UNSIGNED_INT, 0);
+        }
+
+        countTime -= glfwGetTime();
+
         // don't forget to enable shader before setting uniforms
         carShader.use();
 
@@ -123,7 +139,7 @@ int main()
         carShader.setMat4("view", 1, GL_FALSE, glm::value_ptr(view));
 
         // render the loaded model
-        camera.setCamPos(glm::vec3(1.0f + carX, 1.0f, 1.0f + carZ));
+        camera.setCamPos(glm::vec3(5.0f + carX, 1.0f, 1.0f + carZ));
 
         //camera.setYaw(carRotation);
         glm::mat4 model = glm::mat4(1.0f);
@@ -131,6 +147,7 @@ int main()
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
         model = glm::rotate(model, glm::radians(carRotation),
                     glm::vec3(0.0f, 1.0f, 0.0f));
+        std::cout << "rot:" << carRotation << std::endl;
         carShader.setMat4("model", 1, GL_FALSE, glm::value_ptr(model));
         carModel.Draw(carShader);
 
@@ -140,13 +157,10 @@ int main()
 
         // render the loaded model
         glm::mat4 modelRoad = glm::mat4(1.0f);
-        modelRoad = glm::translate(modelRoad, glm::vec3(0.0f, -1.7f, 0.0f)); // translate it down so it's at the center of the scene
+        modelRoad = glm::translate(modelRoad, glm::vec3(0.0f, -1.9f, 0.0f)); // translate it down so it's at the center of the scene
         modelRoad = glm::scale(modelRoad, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
         roadShader.setMat4("model", 1, GL_FALSE, glm::value_ptr(modelRoad));
         roadModel.Draw(roadShader);
-
-        std::cout << glfwGetTime() << std::endl;
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -169,11 +183,19 @@ void processInput(GLFWwindow* window)
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera.ProcessKeyboard(FORWARD, deltaTime);
-        carX -= carSpeed;
+        if(abs(carRotation) >= 90 && abs(carRotation) <= 97){
+            carZ -= carSpeed;
+        }else {
+            carX -= carSpeed;
+        }
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
         camera.ProcessKeyboard(BACKWARD, deltaTime);
-        carX += carSpeed;
+        if(abs(carRotation) >= 90 && abs(carRotation) <= 97){
+            carZ += carSpeed;
+        }else {
+            carX += carSpeed;
+        }
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         camera.ProcessKeyboard(LEFT, deltaTime);
